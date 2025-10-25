@@ -1,0 +1,67 @@
+-- ================================================
+-- Create Database
+-- ================================================
+CREATE DATABASE MiniOnlineLibrary;
+GO
+
+USE MiniOnlineLibrary;
+GO
+
+-- ================================================
+-- Users Table
+-- ================================================
+CREATE TABLE Users (
+    UserId INT IDENTITY(1,1) PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(150) NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Role VARCHAR(20) NOT NULL CHECK (Role IN ('Admin','User')),
+    CreatedAt DATETIME NOT NULL DEFAULT GETDATE()
+);
+GO
+
+-- ================================================
+-- Books Table
+-- ================================================
+CREATE TABLE Books (
+    BookId INT IDENTITY(1,1) PRIMARY KEY,
+    Title VARCHAR(150) NOT NULL,
+    Author VARCHAR(100) NOT NULL,
+    Description TEXT NULL,
+    FilePath VARCHAR(255) NULL,
+    CreatedAt DATETIME NOT NULL DEFAULT GETDATE()
+);
+GO
+
+-- ================================================
+-- BorrowTransactions Table
+-- ================================================
+CREATE TABLE BorrowTransactions (
+    TransactionId INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    BookId INT NOT NULL,
+    BorrowDate DATETIME NOT NULL DEFAULT GETDATE(),
+    ReturnDate DATETIME NULL,
+    Status VARCHAR(20) NOT NULL CHECK (Status IN ('Borrowed','Returned','Overdue')),
+    CONSTRAINT FK_Borrow_User FOREIGN KEY (UserId) REFERENCES Users(UserId),
+    CONSTRAINT FK_Borrow_Book FOREIGN KEY (BookId) REFERENCES Books(BookId)
+);
+GO
+
+-- ================================================
+-- Sample Data (Optional)
+-- ================================================
+-- Insert an Admin
+INSERT INTO Users (Name, Email, PasswordHash, Role)
+VALUES ('Admin User', 'admin@example.com', '$2a$11$nmgP4ItI0wnefQiIdaOYaOkGpEL2jkpKwKkeq0YuzWfrS9wDGeWkK', 'Admin'); --password=1234567890
+
+-- Insert a normal User
+INSERT INTO Users (Name, Email, PasswordHash, Role)
+VALUES ('John Doe', 'john@example.com', '$2a$11$nmgP4ItI0wnefQiIdaOYaOkGpEL2jkpKwKkeq0YuzWfrS9wDGeWkK', 'User'); --password=1234567890
+
+-- Insert some Books
+INSERT INTO Books (Title, Author, Description, FilePath)
+VALUES 
+('C# Basics', 'John Doe', 'Intro to C#', 'dummy.pdf'),
+('Angular Guide', 'Jane Smith', 'Learn Angular', 'angular.pdf');
+GO

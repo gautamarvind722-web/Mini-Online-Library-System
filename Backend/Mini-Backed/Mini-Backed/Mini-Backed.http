@@ -1,0 +1,6 @@
+@Mini_Backed_HostAddress = http://localhost:5270
+
+GET {{Mini_Backed_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
