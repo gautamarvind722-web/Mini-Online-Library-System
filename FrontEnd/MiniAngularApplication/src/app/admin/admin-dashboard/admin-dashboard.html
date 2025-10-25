@@ -1,0 +1,59 @@
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small">
+            <li><a class="dropdown-item" (click)="authService.logout()">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+<div class="container mt-5">
+  <h2>Admin Dashboard</h2>
+
+  <h4 class="mt-4">Add New Book</h4>
+  <form (submit)="addBook(); $event.preventDefault()">
+    <div class="row mb-2">
+      <div class="col"><input class="form-control" placeholder="Title" [(ngModel)]="newBook.title" name="title" required></div>
+      <div class="col"><input class="form-control" placeholder="Author" [(ngModel)]="newBook.author" name="author" required></div>
+      <div class="col"><input class="form-control" placeholder="Description" [(ngModel)]="newBook.description" name="description"></div>
+      <div class="col"><input class="form-control" placeholder="FilePath" [(ngModel)]="newBook.filePath" name="filePath"></div>
+      <div class="col"><button class="btn btn-success">Add Book</button></div>
+    </div>
+  </form>
+
+  <h4 class="mt-4">All Books</h4>
+  <table class="table table-striped">
+    <thead>
+      <tr><th>Title</th><th>Author</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books">
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4 class="mt-4">Borrow Transactions</h4>
+  <table class="table table-striped">
+    <thead>
+      <tr><th>User</th><th>Book</th><th>Borrow Date</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of transactions" >
+        <td>{{ t.user.name }}</td>
+        <td>{{ t.book.title }}</td>
+        <td>{{ t.borrowDate | date:'short' }}</td>
+        <td [ngClass]="{'text-danger': isOverdue(t.borrowDate) && t.status==='Borrowed'}">{{ t.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
+</div>

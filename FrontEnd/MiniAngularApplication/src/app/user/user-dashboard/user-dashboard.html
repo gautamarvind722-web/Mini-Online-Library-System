@@ -1,0 +1,68 @@
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small">
+            <li><a class="dropdown-item" (click)="authService.logout()">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+<div class="container mt-5 d-flex flex-column align-items-center">
+  <h2 class="mb-4 text-center">Available Books</h2>
+
+  <div class="table-responsive w-75">
+    <table class="table table-striped table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="borrowBook(book.bookId)">
+              Borrow
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="mt-5 mb-4 text-center">Borrowed Books</h2>
+
+  <div class="table-responsive w-75">
+    <table class="table table-striped table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let b of borrowed" >
+          <td>{{ b.book.title }}</td>
+          <td>{{ b.book.author }}</td>
+          <td [ngClass]="{'text-danger': b.status==='Overdue'}">{{ b.status }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="returnBook(b.transactionId)">
+              Return
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
